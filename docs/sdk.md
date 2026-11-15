@@ -14,6 +14,8 @@ Call `definePlugin()` once with an object containing any of `activate(context)`,
 
 `context.settings` contains validated manifest settings. Each setting has `key`, `label`, `type` and `default`. Types are `string`, `boolean` and `integer`; integer settings can also specify `min` and `max`. Settings belong to the plugin and do not change Hop's base preferences.
 
+`context.system.cpu` and `context.system.memory` are fractions from 0 to 1, or `null` when unavailable. Memory is used memory divided by total memory. These values come from the existing system monitor snapshot. Reading them does not enable a disabled monitor or start another collector.
+
 `context.timer` contains `state`, `remaining`, `duration`, `session`, `revision` and `startedByPlugin`. Times are seconds. Completion events contain `type: "timer.finished"`, `session`, `revision` and `startedByPlugin`. A timer started by any plugin sets `startedByPlugin` to true, so the Auto break example ignores its completion. Manual changes supersede older plugin commands; putting a different revision in a JavaScript response cannot authorize a stale command.
 
 ## Contributions

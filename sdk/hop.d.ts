@@ -10,8 +10,8 @@ interface Context {
   settings: Settings;
   /** Present only with timer.read. Revisions in JS never authorize a command. */
   timer?: TimerSnapshot;
-  /** Present only with system.read. Snapshot values, no subscription or controls. */
-  system?: {cpu: number; memory: number};
+  /** Present only with system.read. Fractions 0...1, null if unavailable. Snapshot only. */
+  system?: {cpu: number | null; memory: number | null};
 }
 interface TimerFinished {type: 'timer.finished'; startedByPlugin: boolean; session: string; revision: number}
 interface ThemeTokens {accent?: string; background?: string; foreground?: string; secondary?: string; surface?: string; line?: string}
