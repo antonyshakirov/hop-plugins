@@ -7,7 +7,7 @@ import {spawnSync} from 'node:child_process';
 import {generateKeyPairSync} from 'node:crypto';
 const source=new URL('../',import.meta.url);
 async function fixture(run) {
-  const temporary=await mkdtemp(join(tmpdir(),'hop-catalog-test-'));
+  const temporary=await mkdtemp(join(process.platform==='darwin'?'/private/tmp':tmpdir(),'hop-catalog-test-'));
   try {
     const root=join(temporary,'repo');
     await cp(source,root,{recursive:true,filter:path => !path.split('/').includes('.git')});
