@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 1,
+  "revision": 2,
   "publicKeyBase64": "TpLZ6YZRcZbQS22vxqN6eqMW3qqkQI+BMELhylk8UYc=",
   "packageBaseURL": "https://raw.githubusercontent.com/antonyshakirov/hop-plugins/main/packages/",
   "revokedSha256": []

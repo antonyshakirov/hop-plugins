@@ -1,0 +1,26 @@
+{
+  "formatVersion": 1,
+  "manifest": {
+    "id": "auto-break",
+    "version": "1.0.1",
+    "apiVersion": 1,
+    "name": "Auto break",
+    "description": "Start one break when your countdown finishes. Your manual timer changes take priority.",
+    "author": "Hop",
+    "capabilities": [
+      "timer.read",
+      "timer.control"
+    ],
+    "settings": [
+      {
+        "key": "breakMinutes",
+        "label": "Break minutes",
+        "type": "integer",
+        "default": 5,
+        "min": 1,
+        "max": 60
+      }
+    ]
+  },
+  "code": "/*\nMIT License\n\nCopyright (c) 2026 Anton Shakirov\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n*/\ndefinePlugin({\n  onEvent(event, context) {\n    if (event.type !== \"timer.finished\" || event.startedByPlugin) return;\n    return {commands: [{\n      type: \"timer.start\",\n      seconds: context.settings.breakMinutes * 60\n    }]};\n  }\n});\n"
+}

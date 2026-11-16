@@ -1,12 +1,22 @@
 {
   "id": "auto-break",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "apiVersion": 1,
   "name": "Auto break",
   "description": "Start one break when your countdown finishes. Your manual timer changes take priority.",
   "author": "Hop",
-  "capabilities": ["timer.read", "timer.control"],
+  "capabilities": [
+    "timer.read",
+    "timer.control"
+  ],
   "settings": [
-    {"key": "breakMinutes", "label": "Break minutes", "type": "integer", "default": 5, "min": 1, "max": 60}
+    {
+      "key": "breakMinutes",
+      "label": "Break minutes",
+      "type": "integer",
+      "default": 5,
+      "min": 1,
+      "max": 60
+    }
   ]
 }

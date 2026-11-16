@@ -5,6 +5,8 @@ import {fileURLToPath} from 'node:url';
 import {createPrivateKey, sign} from 'node:crypto';
 import {validateManifest,validatePackage,validateCatalog,verifySignature,sha256} from './validation.mjs';
 
+import {withLicenseNotice} from './licensing.mjs';
+
 const root = await realpath(resolve(dirname(fileURLToPath(import.meta.url)), '..'));
 const [command, ...args] = process.argv.slice(2);
 const bytes = value => Buffer.from(JSON.stringify(value,null,2) + '\n');
@@ -37,7 +39,8 @@ async function build(check, signatureRequired = true) {
     await requireDirectory(source);
     const manifest = validateManifest(JSON.parse(await regular(join(source,'manifest.json'))));
     if (manifest.id !== directory.name) throw new Error('Directory must match plugin id');
-    const code = new TextDecoder('utf-8',{fatal:true}).decode(await regular(join(source,'plugin.js')));
+    const decode = data => new TextDecoder('utf-8',{fatal:true}).decode(data);
+    const code = withLicenseNotice(decode(await regular(join(source,'plugin.js'))), decode(await regular(join(source,'LICENSE'))), decode(await read('LICENSE')));
     const data = bytes({formatVersion:1,manifest,code}); validatePackage(data);
     const name = manifest.id + '-' + manifest.version + '.hopplugin';
     if (check) { if (!(await regular(join(root,'packages',name))).equals(data)) throw new Error('Rebuild package: ' + name); }

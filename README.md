@@ -1,6 +1,6 @@
 # Hop plugins — SDK v1 preview
 
-Community plugins for changing Hop's panel, colors and timer behavior.
+Experimental SDK1 and first-party examples for personal customization of Hop's panel, colors and timer behavior. Third-party pack submissions and an official community marketplace are not supported; share personal packs independently.
 
 **Requires the Hop Dev 2.6.0 preview. Stable Hop 2.5 does not run plugins.** The SDK is under development; compatibility is limited to API version 1.
 
@@ -15,26 +15,27 @@ Plugin panels keep Hop's recovery controls. Built-in module slots follow your ex
 
 ## Create a plugin
 
-Copy a folder under `plugins/`, choose a unique lowercase id, and edit `manifest.json` and `plugin.js`. The folder name must match the manifest id. Start with only the permissions you need. The current API is described in [sdk/hop.d.ts](sdk/hop.d.ts) and [docs/sdk.md](docs/sdk.md).
+Copy a folder under `plugins/`, choose a unique lowercase id, and edit `manifest.json` and `plugin.js`. Include a `LICENSE` with the full MIT text and the correct copyright holders. The folder name must match the manifest id. Start with only the permissions you need. The current API is described in [sdk/hop.d.ts](sdk/hop.d.ts) and [docs/sdk.md](docs/sdk.md).
 
 With Node.js 22 or newer:
 
 ```sh
 node --test tests/*.test.mjs
 node scripts/catalog.mjs build
+node scripts/catalog.mjs check-artifacts
 ```
 
-The build writes one JSON `.hopplugin` file per plugin and updates `catalog.json`. Packages contain the manifest and JavaScript source. There are no dependencies to install. Validation compiles JavaScript for syntax checking without executing plugin code.
+The build writes one JSON `.hopplugin` file per plugin and updates `catalog.json`. Packages contain the manifest and JavaScript source. The generated JavaScript includes the complete per-plugin license notice. There are no dependencies to install. Validation compiles JavaScript for syntax checking without executing plugin code.
 
-Open a pull request with your plugin folder and generated package. See [CONTRIBUTING.md](CONTRIBUTING.md). A maintainer reviews the behavior and permissions, increments the catalog revision and signs the resulting catalog. PR checks have no signing keys.
+Keep your own packs outside the official examples and share them through your own repository or files. We accept SDK and documentation fixes, not community pack submissions. See [CONTRIBUTING.md](CONTRIBUTING.md). Existing catalog commands below support the legacy Dev preview and its fixtures; they do not authorize a new marketplace. PR checks have no signing keys.
 
-## Verify the catalog
+## Verify the legacy catalog
 
 ```sh
 node scripts/catalog.mjs check
 ```
 
-This rebuilds expected bytes in memory, verifies each package hash and checks the Ed25519 signature over the exact catalog bytes. The public key is in `catalog-config.json`. Changing a package, catalog field or even catalog whitespace invalidates verification. Updating a plugin requires a user action; the catalog never activates or updates installed plugins automatically.
+For an unsigned SDK draft, `node scripts/catalog.mjs check-artifacts` rebuilds expected bytes in memory and validates package/catalog integrity without accepting a publication signature. The `check` command additionally verifies the Ed25519 signature over the exact catalog bytes; a changed draft is expected to fail it until separately signed for publication. The public key is in `catalog-config.json`. Changing a package, catalog field or even catalog whitespace invalidates verification. Updating a plugin requires a user action; the catalog never activates or updates installed plugins automatically.
 
 ## Publish a catalog update
 
@@ -50,3 +51,7 @@ node scripts/catalog.mjs check
 Never add the signing key to Git or expose it to a pull request workflow. To revoke a package, remove it from the available plugin list and add its SHA-256 to `revokedSha256` in the next catalog revision. App-side checks reject lower catalog revisions and revoked packages. Fetching the catalog requires a user action.
 
 The preview's isolation and app integration are verified separately in the Hop app. Catalog validation alone does not establish that a plugin is safe or that it works on every supported Mac.
+
+## Authors and reuse
+
+Each plugin keeps its author in the app and its own copyright notices in source and downloads. SDK contributions and first-party examples use MIT; contributors retain ownership and permit reuse under that license. Independently shared packs retain their actual licenses. Hop may incorporate a plugin into the core with the required notices and author credit. Details: [authorship and reuse](docs/authorship.md).
